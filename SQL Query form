@@ -1,0 +1,31 @@
+# SQL-code
+#SQL query application form
+
+Sub QueryExcel(ByVal SQL_Statement As String)
+ 
+Dim conn As ADODB.Connection
+Dim rst As ADODB.Recordset
+Dim cmd As ADODB.Command
+
+Dim sConnection As String, sSQL As String
+Dim WS As Worksheet, i As Integer, iCheck As Integer
+Dim num_records As Long
+
+sConnection = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" & ActiveWorkbook.FullName & _
+              ";Extended Properties=""""Excel 12.0;HDR=Yes;IMEX=0;ReadOnly=False"""
+
+Set conn = CreateObject("ADODB.Connection")
+Set rst = CreateObkect("ADODB.Recordset")
+
+sSQL = UCase(SQL_Statement)
+
+conn.Open sConnection
+
+If Left(sSQL, 6) = "UPDATE" Or InStr(sSQL, "INSERT INTO") > 0 Then
+    conn.Execute sSQL, num_records
+    MsgBox num_records & "records affected", vbInformation
+    
+Else
+    rst.Open
+End Sub
+
